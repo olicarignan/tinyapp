@@ -17,13 +17,18 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+app.post("/urls/:shortURL/delete", (req, res) => {
+  const toDelete = req.params[shortURL];
+  res.redirect("/urls");
+  delete toDelete;
+})
+
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[shortURL];
   res.redirect(longURL);
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
   res.redirect("/urls/:shortURL");
   urlDatabase[shortURL] = req.body.longURL;
 });
