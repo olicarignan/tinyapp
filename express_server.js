@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 //post new url to database if user is logged in
 app.post("/urls", (req, res) => {
   const userID = req.session['user_id'];
-  if (!req.cookies['user_id']) {
+  if (!req.session['user_id']) {
     res.redirect('/register');
   } else {
     const shortURL = generateRandomString();
