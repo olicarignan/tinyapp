@@ -36,6 +36,7 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+//post new url to database if user is logged in
 app.post("/urls", (req, res) => {
   const userID = req.session['user_id'];
   if (!req.cookies['user_id']) {
@@ -47,19 +48,21 @@ app.post("/urls", (req, res) => {
   }
 });
 
-
+//get the newURL page
 app.get("/urls/new", (req, res) => {
   const userId = req.session['user_id'];
   let templateVars = { user: users[userId], urls: urlDatabase };
   res.render("urls_new", templateVars);
 });
 
+//delete URL
 app.post("/urls/:shortURL/delete", (req, res) => {
   const toDelete = req.params.shortURL;
   res.redirect("/urls");
   delete urlDatabase[toDelete];
 });
 
+//login if user exists in database
 app.post("/login", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
@@ -75,6 +78,7 @@ app.post("/login", (req, res) => {
   }
 });
 
+//register if user doesn't already exist in database
 app.post("/register", (req, res) => {
   let { email, password } = req.body;
   if (!email || !password) {
@@ -90,33 +94,39 @@ app.post("/register", (req, res) => {
   }
 });
 
+//logout
 app.post("/logout", (req, res) => {
   res.redirect("/urls");
   delete req.session.user_id;
 });
 
+//update URL
 app.post("/urls/:shortURL/update", (req, res) => {
   const shorturl = req.params.shortURL;
   urlDatabase[shorturl] = req.body.longURL;
   res.redirect("/urls");
 });
 
+//get login page
 app.get("/login", (req, res) => {
   const userId = req.session['user_id'];
   let templateVars = { user: users[userId], urls: urlDatabase };
   res.render("login", templateVars);
 });
 
+//redirect to the longURL page
 app.get("/u/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
   res.redirect(longURL);
 });
 
+//get the database in JSON
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
+//get the shortURL page after creating it
 app.get("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
   const userId = req.session['user_id'];
@@ -124,6 +134,7 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+//get the main page and display each user's URLs
 app.get("/urls", (req, res) => {
   let templateVars;
   let newURLs = {};
@@ -141,6 +152,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+//get register page
 app.get("/register", (req, res) => {
   const userId = req.session['user_id'];
   let templateVars = { user: users[userId], urls: urlDatabase };
@@ -151,6 +163,7 @@ app.listen(PORT, () => {
   console.log(`TinyApp listening on port ${PORT}!`);
 });
 
+//generate userID
 const generateRandomString = function() {
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
