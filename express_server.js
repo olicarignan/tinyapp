@@ -101,10 +101,10 @@ app.post("/logout", (req, res) => {
 });
 
 //update URL
-app.post("/urls/:shortURL/update", (req, res) => {
+app.get("/urls/:shortURL/update", (req, res) => {
   const shorturl = req.params.shortURL;
-  urlDatabase[shorturl] = req.body.longURL;
-  res.redirect("/urls");
+  urlDatabase[shorturl].longURL = req.body.longURL;
+  res.redirect(`/urls/${shorturl}`);
 });
 
 //get login page
