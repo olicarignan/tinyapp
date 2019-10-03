@@ -1,3 +1,4 @@
+//get users by email
 const emailLookup = function(email, database) {
   for (let userId in database) {
     if (database[userId].email === email) {
