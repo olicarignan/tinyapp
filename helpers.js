@@ -8,4 +8,14 @@ const emailLookup = function(email, database) {
   return null;
 };
 
-module.exports = emailLookup;
+const userVerifiication = function(database, userId) {
+  let result = {};
+  for (let element in database) {
+    if (database[element].userID === userId) {
+      result[element] = database[element];
+    }
+  }
+  return result;
+}
+
+module.exports = { emailLookup, userVerifiication };
